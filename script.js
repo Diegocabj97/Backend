@@ -1,60 +1,30 @@
 class ProductManager {
   constructor() {
     this.products = [];
-    this.currentProductId = 1;
   }
-
-  addProduct(title, description, price, thumbnail, stock, categoria) {
-    if (
-      !title ||
-      !description ||
-      !price ||
-      !thumbnail ||
-      !stock ||
-      !categoria
-    ) {
-      console.log("Todos los campos son obligatorios");
-      return;
+  addProduct(product) {
+    const prod = this.products.find((prod) => prod.code === product.code);
+    if (prod) {
+      console.log("El producto ya se encuentra agregado");
+    } else {
+      this.products.push(product);
     }
-
-    const existingProduct = this.products.find(
-      (product) => product.title === title
-    );
-    if (existingProduct) {
-      console.log("El producto ya existe");
-      return;
-    }
-
-    const product = new Product(
-      this.currentProductId,
-      title,
-      price,
-      thumbnail,
-      stock,
-      categoria,
-      description
-    );
-
-    this.products.push(product);
-    this.currentProductId++;
   }
-
   getProducts() {
-    return this.products;
+    console.log(this.products);
   }
-
   getProductById(id) {
-    const product = this.products.find((product) => product.code === id);
-    if (!product) {
+    const prod = this.products.find((product) => product.id === id);
+    if (prod) {
+      console.log(prod);
+    } else {
       console.log("Producto no encontrado");
-      return null;
     }
-    return product;
   }
 }
-
 class Product {
   constructor(code, title, price, thumbnail, stock, categoria, description) {
+    this.id = Product.incrementarId();
     this.code = code;
     this.title = title;
     this.price = price;
@@ -63,48 +33,48 @@ class Product {
     this.categoria = categoria;
     this.description = description;
   }
+  static incrementarId() {
+    if (this.idIncrement) {
+      this.idIncrement++;
+    } else {
+      this.idIncrement = 1;
+    }
+    return this.idIncrement;
+  }
 }
-
-// Ejemplo de uso:
-const productManager = new ProductManager();
-
-productManager.addProduct(
-  "CPU AMD",
-  "El mejor del mercado",
-  25000,
-  "src",
-  24,
-  "Procesadores"
-);
-productManager.addProduct(
+const producto1 = new Product(
+  "PV001PC",
   "GPU Nvidia",
-  "Potencia gráfica increíble",
   40000,
   "src",
   10,
-  "Tarjetas gráficas"
+  "Placas de Video",
+  "Potencia gráfica increíble",
+  []
 );
-productManager.addProduct(
+const producto2 = new Product(
+  "AL001PC",
   "SSD Samsung",
-  "Almacenamiento rápido y confiable",
   15000,
   "src",
   50,
-  "Almacenamiento"
+  "Almacenamiento",
+  "Almacenamiento rápido y confiable",
+  []
 );
-
-productManager.addProduct(
+const producto3 = new Product(
+  "FP001PC",
   "Fuente de Poder EVGA 850W",
-  "La mejor Fuente del mercado",
   17000,
   "src",
   20,
-  "Fuentes de Poder"
+  "Fuentes de Poder",
+  "La mejor Fuente del mercado"
 );
 
-const allProducts = productManager.getProducts();
-console.log(allProducts);
-
-const productIdToFind = 4;
-const productById = productManager.getProductById(productIdToFind);
-console.log(productById);
+const productManager = new ProductManager();
+productManager.addProduct(producto1);
+productManager.addProduct(producto2);
+productManager.addProduct(producto3);
+productManager.getProducts();
+productManager.getProductById(3);
