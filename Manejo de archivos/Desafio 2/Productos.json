@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "id": 1,
+    "code": "PV001PC",
+    "title": "GPU Nvidia",
+    "price": 40000,
+    "thumbnail": "src",
+    "stock": 10,
+    "categoria": "Placas de Video",
+    "description": "Potencia gráfica increíble"
+  },
+  {
+    "id": 2,
+    "code": "AL001PC",
+    "title": "SSD Samsung",
+    "price": 15000,
+    "thumbnail": "src",
+    "stock": 50,
+    "categoria": "Almacenamiento",
+    "description": "Almacenamiento rápido y confiable"
+  },
+  {
+    "id": 3,
+    "code": "FP001PC",
+    "title": "Fuente de Poder EVGA 850W",
+    "price": 17000,
+    "thumbnail": "src",
+    "stock": 20,
+    "categoria": "Fuentes de Poder",
+    "description": "La mejor Fuente del mercado"
+  }
+]

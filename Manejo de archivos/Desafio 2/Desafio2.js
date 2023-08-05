@@ -1,70 +1,66 @@
 import { promises as fs } from "fs";
-const path = "./Productos.json";
-
+import { title } from "process";
 class ProductManager {
-  constructor() {}
-  async getProducts() {}
-  async getProductById() {}
-  async addProduct() {}
-  async deleteProduct() {}
-  async updateProduct() {}
+  constructor() {
+    this.path = "./Productos.json";
+  }
+
+  async getProducts() {
+    const prods = JSON.parse(await fs.readFile(this.path, "utf-8"));
+    console.log(prods);
+  }
+  async getProductById(id) {
+    const prods = JSON.parse(await fs.readFile(this.path, "utf-8"));
+    const prod = prods.find((product) => product.id === id);
+    if (prod) {
+      console.log(prod);
+    } else {
+      console.log("Producto no encontrado");
+    }
+  }
+  async addProduct(product) {
+    const prods = JSON.parse(await fs.readFile(this.path, "utf-8"));
+    const prod = prods.find((prod) => prod.id === product.id);
+    if (prod) {
+      console.log("El producto ya se encuentra agregado");
+    } else {
+      prods.push(product);
+      await fs.writeFile(this.path, JSON.stringify(prods));
+      console.log("Producto agregado correctamente");
+    }
+  }
+  async deleteProduct(id) {
+    const prods = JSON.parse(await fs.readFile(this.path, "utf-8"));
+    const prod = prods.find((prod) => prod.id === id);
+    if (prod) {
+      await fs.writeFile(
+        this.path,
+        JSON.stringify(prods.filter((prod) => prod.id != id)),
+        console.log("Producto eliminado correctamente")
+      );
+    } else {
+      console.log("Producto no encontrado");
+    }
+  }
+  async updateProduct(id, product) {
+    const prods = JSON.parse(await fs.readFile(this.path, "utf-8"));
+    const prodindex = prods.findIndex((prod) => prod.id === id);
+
+    if (prodindex != -1) {
+      prods[prodindex].code = product.code;
+      prods[prodindex].title = product.title;
+      prods[prodindex].price = product.price;
+      prods[prodindex].thumbnail = product.thumbnail;
+      prods[prodindex].stock = product.stock;
+      prods[prodindex].categoria = product.categoria;
+      prods[prodindex].description = product.description;
+
+      await fs.writeFile(this.path, JSON.stringify(prods));
+    } else {
+      console.log("Primero agregue el producto para poder actualizarlo");
+    }
+  }
 }
-const addProduct = async (product) => {
-  const prods = JSON.parse(await fs.readFile(path, "utf-8"));
-  const prod = prods.find((prod) => prod.id === product.id);
-  if (prod) {
-    console.log("El producto ya se encuentra agregado");
-  } else {
-    prods.push(product);
-    await fs.writeFile(path, JSON.stringify(prods));
-    console.log("Producto agregado correctamente");
-  }
-};
-const getProducts = async () => {
-  const prods = JSON.parse(await fs.readFile(path, "utf-8"));
-  console.log(prods);
-};
-const getProductById = async (id) => {
-  const prods = JSON.parse(await fs.readFile(path, "utf-8"));
-  const prod = prods.find((product) => product.id === id);
-  if (prod) {
-    console.log(prod);
-  } else {
-    console.log("Producto no encontrado");
-  }
-};
-const updateProduct = async (id, product) => {
-  const prods = JSON.parse(await fs.readFile(path, "utf-8"));
-  const prodindex = prods.findIndex((prod) => prod.id === id);
-
-  if (prodindex != -1) {
-    prods[prodindex].code = product.code;
-    prods[prodindex].title = product.title;
-    prods[prodindex].price = product.price;
-    prods[prodindex].thumbnail = product.thumbnail;
-    prods[prodindex].stock = product.stock;
-    prods[prodindex].categoria = product.categoria;
-    prods[prodindex].description = product.description;
-
-    await fs.writeFile(path, JSON.stringify(prods));
-  } else {
-    console.log("Primero agregue el producto para poder actualizarlo");
-  }
-};
-const deleteProduct = async (id) => {
-  const prods = JSON.parse(await fs.readFile(path, "utf-8"));
-  const prod = prods.find((prod) => prod.id === id);
-  if (prod) {
-    await fs.writeFile(
-      path,
-      JSON.stringify(prods.filter((prod) => prod.id != id)),
-      console.log("Producto eliminado correctamente")
-    );
-  } else {
-    console.log("Producto no encontrado");
-  }
-};
-
 class Product {
   constructor(code, title, price, thumbnail, stock, categoria, description) {
     this.id = Product.incrementarId();
@@ -114,7 +110,8 @@ const producto3 = new Product(
   "Fuentes de Poder",
   "La mejor Fuente del mercado"
 );
-deleteProduct(3);
+const PM = new ProductManager();
+PM.addProduct(producto3);
 
 /* productManager.addProduct(producto1);
 productManager.addProduct(producto2);
